@@ -1,0 +1,14 @@
+{
+    "name": "ksiazker-biznes-elektroniczny",
+    "version": "1.0.0",
+    "description": "Automated tests to check if placing an order works correctly for Ksiazker store made in Prestashop",
+    "author": "Sebastian Pietras",
+    "scripts": {
+        "test": "mocha order_test.spec.js"
+    },
+    "dependencies": {
+        "selenium-webdriver": "^4.7.0",
+        "mocha": "^10.1.0",
+        "geckodriver": "^3.2.0"
+    }
+}
