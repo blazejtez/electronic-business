@@ -40,11 +40,13 @@ services:
       PS_DEMO_MODE: ${PS_DEMO_MODE:-0}
       PS_HANDLE_DYNAMIC_DOMAIN: ${PS_HANDLE_DYNAMIC_DOMAIN:-1}
       PS_INSTALL_DB: ${PS_INSTALL_DB:-1}
-      ADMIN_MAIL: ${ADMIN_MAIL:-demo@presta.com}
+      PS_ENABLE_SSL: ${PS_ENABLE_SSL:-1}
+      ADMIN_MAIL: ${ADMIN_MAIL:-ksiazker.obslugaklienta@gmail.com}
       ADMIN_PASSWD: ${ADMIN_PASSWD:-ProffesorDziub1ch}
     command: ["/tmp/wait-for-it.sh", "--timeout=60", "--strict", "mysql:3306", "--", "/tmp/docker_run_git.sh"]
     ports:
       - "8001:80"
+      - "8002:443"
     volumes:
       - ./PrestaShop/:/var/www/html:delegated
   phpmyadmin:
