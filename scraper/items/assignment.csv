@@ -1,0 +1,15 @@
+Product ID;ID produktu
+Active;TRUE
+Name;Tytuł
+Categories;Category
+Price tax excluded;Price
+On sale;FALSE
+Quantity;Quantity
+Minimal quantity;Minimal quantity
+Description;Description
+Available for order;TRUE
+Show price;TRUE
+Image URLs;Image URL
+Image alt texts;Image alt
+Delete existing images;TRUE
+Feature;AUTOR:Autor:ONE|WYDAWNICTWO:Wydawnictwo:TWO
