@@ -79,6 +79,18 @@ if [ $PS_DEMO_MODE -ne 0 ]; then
     sed -ie "s/define('_PS_MODE_DEMO_', false);/define('_PS_MODE_DEMO_',\ true);/g" /var/www/html/config/defines.inc.php
 fi
 
+echo "\n* configuring ssl now...\n";
+
+openssl req -newkey rsa:2048 -new -nodes -x509 -days 365 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt -subj "/C=PL/ST=Pomerania/L=Gdansk/O=PG/OU=./CN=."
+a2enmod ssl
+
+cp /tmp/000-default.conf /etc/apache2/sites-available/000-default.conf
+cp /tmp/apache2.conf /etc/apache2/apache2.conf
+
+#echo "\n* adding banner ...\n"
+
+#cp /var/www/html/img/be_baner.png /var/www/html/modules/ps_banner/img/0edfa23c5454660964ac5632fc8f812c.png
+
 echo "\n* Almost ! Starting web server now\n";
 
 exec apache2-foreground

@@ -4,17 +4,16 @@ Project made for university course, which includes mocked online shop.
 * [Contents of the repository](#contents)
   * [Prestashop directory](#prestashop)
   * [docker-compose.yml](#docker-compose)
-  * [Docker usage scripts](#docker-usage-scripts)
-* [System requirements and dependencies](#system-requirements)
+  * [configuration of the docker-compose](#configuration-docker-composeyml)
+    * [mySQL](#mysql)
+    * [phpMyAdmin](#phpmyadmin)
+    * [Prestashop](#prestashop-1)
+* [System requirements and dependencies](#system-requirements-and-dependencies)
 * [Usage](#usage)
   * [docker-compose](#docker-compose)
-    * [Configuration of the docker-compose](#configuration-docker-composeyml)
-      * [mySQL](#mysql)
-      * [phpMyAdmin](#phpmyadmin)
-      * [Prestashop](#prestashop-1)
-    * [docker-compose usage concerning the project](#docker-compose-usage)
   * [Docker usage concerning the project](#docker-usage-concerning-the-project)
-  * [Docker scripts usage](#docker-usage-scripts-1)
+  * [Dumps/data REQUIRED](#dump)
+* [SSL](#ssl)
 
 # Contents
 
@@ -32,32 +31,6 @@ Config of the docker configuration, contains instruction for Docker to create ap
 
 More about its usage leter on.
 
-### Docker usage scripts
-
-Those are the scripts to make the work for us easier.
-
-# System requirements and dependencies
-
-## Docker with docker-compose
-
-The project was only tested on Linux version, main part should work on Windows as docker is highly compatible with all main platforms but can't guarantee it. 
-
-Instalation and further help is available at [Docker compose documentation site (Linux)](https://docs.docker.com/compose/install/)
-
-or [main Docker documantation site](https://docs.docker.com/desktop/).
-
-I'm using docker engine with docker cli instead of docker desktop.
-
-## The project also uses:
-
-* Prestashop
-* phpMyAdmin
-* mySQL
-
-# Usage
-
-## docker-compose
-
 ### configuration (docker-compose.yml)
 
 Current configuration contains creation of three containers:
@@ -65,17 +38,19 @@ Current configuration contains creation of three containers:
 #### mySql
 
     mysql:
-        image: mysql:5
-        ports:
-            - "3306"
-        volumes:
-            - db-data:/var/lib/mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: prestashop
-            MYSQL_DATABASE: prestashop
-        restart: always
+      build:
+        dockerfile: Dockerfile
+        context: ./mysql/.
+      ports:
+        - "3306"
+      volumes:
+        - db-data:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: prestashop
+        MYSQL_DATABASE: prestashop
+      restart: always
 
-This definition declares creation of a container made from image of mysql 5 on port 3306 (in docker internal network) with a named volume to keep database files even if the container is removed.
+This definition declares creation of a container made from image of mysql 5 (altered in Dockerfile in `./mysql/Dockerfile`) on port 3306 (in docker internal network) with a named volume to keep database files even if the container is removed.
 
 Environment variables are set in `environment:` section with Prestashop database name and password curently provided.
 
@@ -105,52 +80,71 @@ Environment variables contain database connection details, depends_on means the 
 #### Prestashop
 
     prestashop-git:
-        build:
-            dockerfile: .docker/Dockerfile
-            context: ./PrestaShop/.
-            args:
-                - VERSION=${VERSION:-8.1-apache}
-                - USER_ID=${USER_ID:-1000}
-                - GROUP_ID=${GROUP_ID:-1000}
-        environment:
-            DISABLE_MAKE: ${DISABLE_MAKE:-0}
-            PS_INSTALL_AUTO: ${PS_INSTALL_AUTO:-1}
-            DB_PASSWD: ${DB_PASSWD:-prestashop}
-            DB_NAME: ${DB_NAME:-prestashop}
-            DB_SERVER: ${DB_SERVER:-mysql}
-            DB_PREFIX: ${DB_PREFIX:-ps_}
-            PS_DOMAIN: ${PS_DOMAIN:-localhost:8001}
-            PS_FOLDER_INSTALL: ${PS_FOLDER_INSTALL:-install-dev}
-            PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN:-admin-dev}
-            PS_COUNTRY: ${PS_COUNTRY:-pl}
-            PS_LANGUAGE: ${PS_LANGUAGE:-en}
-            PS_DEV_MODE: ${PS_DEV_MODE:-1}
-            PS_DEMO_MODE: ${PS_DEMO_MODE:-0}
-            PS_HANDLE_DYNAMIC_DOMAIN: ${PS_HANDLE_DYNAMIC_DOMAIN:-1}
-            PS_INSTALL_DB: ${PS_INSTALL_DB:-1}
-            ADMIN_MAIL: ${ADMIN_MAIL:-demo@presta.com}
-            ADMIN_PASSWD: ${ADMIN_PASSWD:-ProffesorDziub1ch}
-        command: ["/tmp/wait-for-it.sh", "--timeout=60", "--strict", "mysql:3306", "--", "/tmp/docker_run_git.sh"]
-        ports:
-            - "8001:80"
-        volumes:
-            - ./PrestaShop/:/var/www/html:delegated
+      build:
+        dockerfile: .docker/Dockerfile
+        context: ./PrestaShop/.
+        args:
+          - VERSION=${VERSION:-8.1-apache}
+          - USER_ID=${USER_ID:-1000}
+          - GROUP_ID=${GROUP_ID:-1000}
+      environment:
+        DISABLE_MAKE: ${DISABLE_MAKE:-0}
+        PS_INSTALL_AUTO: ${PS_INSTALL_AUTO:-1}
+        DB_PASSWD: ${DB_PASSWD:-prestashop}
+        DB_NAME: ${DB_NAME:-prestashop}
+        DB_SERVER: ${DB_SERVER:-mysql}
+        DB_PREFIX: ${DB_PREFIX:-ps_}
+        PS_DOMAIN: ${PS_DOMAIN:-localhost:8001}
+        PS_FOLDER_INSTALL: ${PS_FOLDER_INSTALL:-install-dev}
+        PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN:-admin-dev}
+        PS_COUNTRY: ${PS_COUNTRY:-pl}
+        PS_LANGUAGE: ${PS_LANGUAGE:-pl}
+        PS_DEV_MODE: ${PS_DEV_MODE:-1}
+        PS_DEMO_MODE: ${PS_DEMO_MODE:-0}
+        PS_HANDLE_DYNAMIC_DOMAIN: ${PS_HANDLE_DYNAMIC_DOMAIN:-1}
+        PS_INSTALL_DB: ${PS_INSTALL_DB:-1}
+        PS_ENABLE_SSL: ${PS_ENABLE_SSL:-1}
+        ADMIN_MAIL: ${ADMIN_MAIL:-ksiazker.obslugaklienta@gmail.com}
+        ADMIN_PASSWD: ${ADMIN_PASSWD:-ProffesorDziub1ch}
+      command: ["/tmp/wait-for-it.sh", "--timeout=60", "--strict", "mysql:3306", "--", "/tmp/docker_run_git.sh"]
+      ports:
+        - "8001:80"
+        - "8002:443"
+      volumes:
+        - ./PrestaShop/:/var/www/html:delegated
 
 This is the most important definition of the Prestashop project container, it uses an image made from Dockerfile specified in `Prestashop/.docker/Dockerfile`.
 
 Context means that the Dockerfile will work in specified project,
 args specify used parrent image of the apache and user used to get rid of permissions problems.
 
-Environment variables specify Prestashop configuration, most of those settings are described in [Prestashop additional repository description](https://github.com/PrestaShop/docker). Those settings can easly be changed as needed, we can add more or get rid of some, as it stands we install the Prestashop automaticly with english language as the default, polish localization etc. TODO: Here we will have to add SSL, domains etc.
-The best way for those settings to take place is reinstaling prestashop for example by deleting the container/s (`docker-compose down`, `docker stop PRESTASHOP_CONTAINER_NAME` with `docker rm PRESTASHOP_CONTAINER_NAME`; more info later on) and then running them again (`docker-compose up`, `docker-compose up PRESTASHOP_CONTAINER_NAME`; more info later on)
+Environment variables specify Prestashop configuration, most of those settings are described in [Prestashop additional repository description](https://github.com/PrestaShop/docker). Those settings can easly be changed as needed, we can add more or get rid of some, as it stands the Prestashop is already installed with values present in the DB dump so most of them isn't taken into account.
 
-NOTE: reinstalation will fail if there is `Prestashop/config/settings.inc.php` file present, it has to be removed before atempting reinstallation
-
-The container is exposed to the port 8001 on the PC.
+The container is exposed to the ports 8001 (http) and 8002 (https) on the PC.
 
 The volume allows for the files in `Prestashop` directory to be connected to container's files, changes in one of them happen in the other. Delegated added to the volume means that not every change made in the container happens instantaneously on the machine to allow some kind of a failsafe if the container crusher becaouse of some change.
 
-### docker-compose usage
+# System requirements and dependencies
+
+## Docker with docker-compose
+
+The project was only tested on Linux version, main part should work on Windows as docker is highly compatible with all main platforms but can't guarantee it. 
+
+Instalation and further help is available at [Docker compose documentation site (Linux)](https://docs.docker.com/compose/install/)
+
+or [main Docker documantation site](https://docs.docker.com/desktop/).
+
+I'm using docker engine with docker cli instead of docker desktop.
+
+## The project also uses:
+
+* Prestashop
+* phpMyAdmin
+* mySQL
+
+# Usage
+
+## docker-compose
 
 Those are the main commands needed to use this project, all of them should be run in the folder the `docker-compose.yml` file is located in and with root privilages, usage of sudo for each command can be avoided by making a Docker user group with root privilages, the proccess is described in [the docker documentation](https://docs.docker.com/engine/install/linux-postinstall/).
 
@@ -169,8 +163,10 @@ Those are the main commands needed to use this project, all of them should be ru
 
 More commands and much more detailed descriptions are available at [Docker CLI documentation](https://docs.docker.com/engine/reference/run/)
 
-## Docker usage scripts
+## Dump
 
-The scripts are wrappers for most useful Docker commands.
+The MySQL container won't even build without a dump file (backup) of the database present in `./mysql/`. It has to be named `dump.sql`. Docker will automatically import the dump during container initialization.
 
-TODO: scripts
+# SSL
+
+SSL jest tworzony i konfigurowany automatycznie przy pomocy Dockerfile Prestashopam skryptów i plików w folderze `/Prestashop/.docker/` oraz odpowiedniej konfiguracji bazy danych w dumpie.
