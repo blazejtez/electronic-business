@@ -1,0 +1,21 @@
+Product_ID;Product index;Attributes(name:type:position)*;Values(name:position);Supplier reference;Reference;EAN13;UPC;MPN;Wholesale price;Impact on price;Ecotax;Quantity;Minimal quantity;Low stock;Low stock receive email;Impact on weight;Default;Combination available date;Image position;Image URLs (x,y,z...);Image alt text;ID/Name of shop;Advanced Stock Managment;Depends on stock;Warehouse
+1;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+1;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;
+2;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+2;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;
+3;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+3;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;
+4;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+4;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;
+5;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+5;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;
+6;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+6;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;
+7;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+7;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;
+8;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+8;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;
+9;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+9;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;
+10;;Okładka:radio:0;Miękka:0;;;;;;;0;;100;;;;;;;;;;;;;
+10;;Okładka:radio:0;Twarda:1;;;;;;;10;;100;;;;;;;;;;;;;

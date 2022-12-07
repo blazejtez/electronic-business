@@ -34,6 +34,7 @@ if __name__ == "__main__":
     dfile.close()
 
     counter = 0
+    skip_counter = 0
     out_file.write(to_presta_csv(headers)+"\n")
     for line in in_file.readlines()[:10]:
         print("\n\n",counter,"\n")
@@ -62,7 +63,7 @@ if __name__ == "__main__":
         response = req.get(img_link, stream=True)
         link = img_link.split("/")
         print(img_link,"\n",link)
-        atributes["Image URL"] = "http://localhost/c/"+link[-1]
+        atributes["Image URL"] = "http://localhost/import_data/"+link[-1]
         with open(items_detail_dir+"img/"+link[-1], 'wb') as img_file:
              shutil.copyfileobj(response.raw, img_file)
 
@@ -75,15 +76,30 @@ if __name__ == "__main__":
                 atributes[prop[0][:-1]] = m
             if not found:
                 atributes[prop[0][:-1]] = prop[1]
-        atributes['Autor']=atributes['Autor'].replace("&nbsp;"," ")
+        # kto umrze ten umrze i trudno
+        try:
+            atributes['Autor']=atributes['Autor'].replace("&nbsp;"," ")
+        except Exception:
+            print('Skipping due to Autor error')
+            skip_counter += 1
+            continue
         des = re.search(des_prefix+".*?"+des_suffix,text,re.DOTALL).group(0)
-        atributes['Description'] = "'"+des.removesuffix(des_suffix).removeprefix(des_prefix).replace("\n","")+"'"
+        atributes['Description'] = '"'+des.removesuffix(des_suffix).removeprefix(des_prefix).replace('"', "'").replace("\n","")+'"'
+        atributes['ID produktu'] = counter
 
 
 
         for a in atributes:
             print(a,":",atributes[a])
 
-        out_file.write(to_presta_from_dict(headers,assignment,atributes)+"\n")
+        # kto umrze ten umrze i trudno
+        try:
+            write_data = to_presta_from_dict(headers,assignment,atributes)+"\n"
+            out_file.write(write_data)
+        except Exception:
+            print('Skipping due to KeyError')
+            skip_counter += 1
+            continue
+    print('Skip counter: ' + skip_counter)
     in_file.close()
     out_file.close()
