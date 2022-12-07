@@ -3,8 +3,6 @@
 *.log
 npm-debug.log.*
 .sass-cache/
-*.swp
-*.swo
 .cache/
 
 # Cache
@@ -34,8 +32,6 @@ npm-debug.log.*
 !/upload/.htaccess
 
 /docs/phpdoc-sf/
-*.hot-update.js
-*.hot-update.json
 
 
 /admin-dev/autoupgrade/*
@@ -58,14 +54,6 @@ themes/*/cache/*
 
 # Symfony
 
-/bin/
-/.web-server-pid
-/app/Resources/geoip/GeoLite2-City.mmdb
-/app/config/parameters.yml
-/app/config/parameters.php
-/build/
-/phpunit.xml
-/var/*
 !/var/cache
 /var/cache/*
 !var/cache/.gitkeep
@@ -83,3 +71,4 @@ themes/*/cache/*
 /web/bundles/
 
 
+!/*.xml
