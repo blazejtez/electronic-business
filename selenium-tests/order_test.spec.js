@@ -48,7 +48,7 @@ suite(function(env) {
             order_city: 'Gdańsk'
         };
 
-        this.timeout(40000); //prevents tests from failing due to loading times
+        this.timeout(60000); //prevents tests from failing due to loading times
 
         before(async function() {
             verify_configuration(cfg);
@@ -189,6 +189,7 @@ suite(function(env) {
 
             const submit_order = await driver.findElement(By.css('.checkout a'));
             await driver.get(await submit_order.getAttribute('href'));
+            await new Promise(r => setTimeout(r, 1000));
 
             //fillout address form
             await driver.findElement(By.id('field-address1')).sendKeys(cfg.order_address);
@@ -197,6 +198,7 @@ suite(function(env) {
         });
 
         step('Choose delivery method', async function() {
+            await new Promise(r => setTimeout(r, 1000));
             const deliveries = await driver.findElements(By.className('delivery-option'));
             for (let delivery of deliveries) {
                 const delivery_name = await delivery.findElement(By.className('carrier-name'));
@@ -222,6 +224,10 @@ suite(function(env) {
             await driver.findElement(By.id('conditions_to_approve[terms-and-conditions]')).click();
 
             await driver.findElement(By.css('#payment-confirmation button')).click();
+
+            while (await driver.getTitle() !== 'Potwierdzenie zamówienia') {
+                await new Promise(r => setTimeout(r, 500));
+            }
 
             assert.equal(await driver.getTitle(), 'Potwierdzenie zamówienia');
         });

@@ -65,10 +65,7 @@ themes/*/cache/*
 !var/sessions/.gitkeep
 !var/SymfonyRequirements.php
 !/var/modules
-/var/modules/*
 !/var/modules/.gitkeep
-/vendor/
-/web/bundles/
 
 
 !/*.xml
