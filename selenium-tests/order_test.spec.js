@@ -31,7 +31,7 @@ suite(function(env) {
         //---Test configuration---
         const cfg = {
             //--Product ordering--
-            categories_names: ['Biografie', 'Fantastyka'], //category names to add products to cart from
+            categories_names: ['Fantastyka Horror', 'Nauka Jezykow'], //category names to add products to cart from
             products_per_category: 5, //amount of products added to cart from each category
             min_quantity: 1, //minimum quantity of product to be randomized
             max_quantity: 10, //maximum quantity of product to be randomized
@@ -122,14 +122,16 @@ suite(function(env) {
             //for each product page, add it to cart with random amount
             for (let product_link of product_links) {
                 await driver.get(product_link);
+                await new Promise(r => setTimeout(r, 1000));
 
                 let amount = Math.floor(Math.random() * (cfg.max_quantity - 1)) + cfg.min_quantity;
                 let quantity = await driver.findElement(By.id('quantity_wanted'));
                 await quantity.sendKeys(Key.CONTROL + "a");
                 await quantity.sendKeys(Key.DELETE);
-                await quantity.sendKeys(amount.toString(), Key.ENTER);
+                await quantity.sendKeys(amount.toString());
                 
                 await driver.findElement(By.className('add-to-cart')).click();
+                await new Promise(r => setTimeout(r, 1000));
             }
         });
 

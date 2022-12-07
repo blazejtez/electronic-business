@@ -48,7 +48,7 @@ Test configuration is at the beginning of **order_test.spec.js** file:
     //---Test configuration---
     const cfg = {
         //--Product ordering--
-        categories_names: ['Biografie', 'Fantastyka'],
+        categories_names: ['Fantastyka Horror', 'Nauka Jezykow'],
         products_per_category: 5,
         min_quantity: 1,
         max_quantity: 10,
