@@ -868,7 +868,7 @@ describe('FO - Account : Get GDPR data in PDF', async () => {
         if (connectionOrigin === 'Direct link') {
           connectionOrigin = '';
         } else if (connectionOrigin === 'localhost') {
-          connectionOrigin = 'http://localhost:8001/,en/,';
+          connectionOrigin = 'http://localhost:12454/,en/,';
         }
         await expect(connectionOrigin).to.not.be.null;
       });

@@ -70,7 +70,7 @@ suite(function(env) {
 
         step('Finding and adding products to cart', async function() {
             //load main page and navigate to 'Książki' category
-            await driver.get('https://localhost:8002/');
+            await driver.get('https://localhost:12455/');
             assert.equal(await driver.getTitle(), "Książker");
 
             await driver.manage().setTimeouts({ implicit: 500 });

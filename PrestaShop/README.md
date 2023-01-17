@@ -56,9 +56,9 @@ To run the software, use:
 docker-compose up
 ```
 
-Then reach your shop on this URL: http://localhost:8001
+Then reach your shop on this URL: http://localhost:12455
 
-Docker will bind your port 8001 to the web server. If you want to use other port, open and modify the file `docker-compose.yml`.
+Docker will bind your port 12455 to the web server. If you want to use other port, open and modify the file `docker-compose.yml`.
 MySQL credentials can also be found and modified in this file if needed.
 
 **Note:**  Before auto-installing PrestaShop, this container checks the file *config/settings.inc.php* does not exist on startup.

@@ -25,4 +25,4 @@ RUN apt install -y \
     apt-utils \
     mailutils
 
-CMD ["/tmp/docker_run_git.sh"]
+CMD ["/tmp/wait-for-it.sh", "--timeout=60", "--strict", "be_12455_mysql:3306", "--", "/tmp/docker_run_git.sh"]

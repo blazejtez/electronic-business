@@ -59,7 +59,7 @@ Disallow: /*controller=search
 Disallow: /*controller=statistics
 Disallow: /*controller=attachment
 Disallow: /*controller=guest-tracking
-# Directories for localhost:8001
+# Directories for localhost:12454
 Disallow: /app/
 Disallow: /cache/
 Disallow: /classes/
