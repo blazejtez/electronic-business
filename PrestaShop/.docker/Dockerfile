@@ -25,4 +25,9 @@ RUN apt install -y \
     apt-utils \
     mailutils
 
+COPY ./ /var/www/html/
+
+RUN chown -R www-data:www-data /var/www/html/
+
+
 CMD ["/tmp/wait-for-it.sh", "--timeout=60", "--strict", "be_12455_mysql:3306", "--", "/tmp/docker_run_git.sh"]
