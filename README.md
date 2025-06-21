@@ -1,4 +1,4 @@
-# electroni-business
+# electronic-business
 Project made for university course, which includes mocked online shop.
 
 * [Contents of the repository](#contents)
